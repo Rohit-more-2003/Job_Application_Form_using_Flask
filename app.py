@@ -3,6 +3,8 @@ from flask import request
 
 from flask_sqlalchemy import SQLAlchemy
 
+from datetime import datetime
+
 app = Flask(__name__)
 
 # Configure the app to protect it from hackers, trackers, hijackers, etc.
@@ -24,11 +26,19 @@ class Form(db.Model):
 @app.route('/', methods=["GET", "POST"])
 def index():
 	if request.method == "POST":
+		# Get the user information
 		first_name = request.form['firstName']
 		last_name = request.form['lastName']
 		email = request.form['email']
 		start_date = request.form['startDate']
+		start_date_obj = datetime.strptime(start_date, "%Y-%m-%d")
 		occupation = request.form['occupation']
+		
+		# Enter the user information in database
+		form = Form(first_name=first_name, last_name=last_name, email=email,
+		            date=start_date_obj, occupation=occupation)
+		db.session.add(form)
+		db.session.commit()
 		
 	return render_template('index.html')
 
