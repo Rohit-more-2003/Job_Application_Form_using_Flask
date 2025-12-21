@@ -12,10 +12,7 @@ def index():
 		start_date = request.form['startDate']
 		occupation = request.form['occupation']
 		
-	
 	return render_template('index.html')
-
-
 
 
 if __name__ == "__main__":
